@@ -6,8 +6,6 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: vibe-trading-agent
-    ports:
-      - "8000:8000"
     environment:
       - HOST=0.0.0.0
       - PORT=8000
@@ -24,14 +22,26 @@ services:
       timeout: 10s
       retries: 3
       start_period: 5s
+    networks:
+      - traefik_proxy
       
   vibe-trading-frontend:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vibe-trading-frontend.rule=Host(`dev.thevibe.trading`)"
+      - "traefik.http.routers.vibe-trading-frontend.entrypoints=https"
+      - "traefik.http.routers.vibe-trading-frontend.tls=true"
+      - "traefik.http.routers.vibe-trading-frontend.tls.certresolver=forge"
     build:
       context: frontend
       dockerfile: Dockerfile.frontend
     container_name: vibe-trading-frontend
-    ports:
-      - "80:80"  # Nginx serves on port 80
     depends_on:
       - vibe-trading-agent
     restart: unless-stopped
+    networks:
+      - traefik_proxy
+
+networks:
+  traefik_proxy:
+    external: true
