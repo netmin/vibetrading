@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-text font-sans;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply bg-accent hover:bg-accent-hover rounded-md py-3 px-4 text-base font-medium transition-all;
+  }
+
+  .input {
+    @apply bg-background border border-border focus:border-accent rounded-md py-3 px-4 outline-none text-base;
+  }
+
+  .card {
+    @apply bg-card/80 backdrop-blur rounded-lg p-6 shadow-soft-glow;
+  }
+
+  .link {
+    @apply text-accent underline underline-offset-2 hover:text-accent-hover;
+  }
+}

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibe Trading</title>
+  <style>
+    :root {
+      --background: #0e0e10;
+      --card: rgba(30, 30, 35, 0.5);
+      --accent: #0070f3;
+      --accent-light: #3a90f7;
+      --text-primary: #e1e2e3;
+      --text-secondary: #a8a9b3;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: var(--background);
+      color: var(--text-primary);
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo span.beta {
+      margin-left: 8px;
+      background: var(--accent);
+      color: white;
+      font-size: 0.6rem;
+      padding: 2px 6px;
+      border-radius: 20px;
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      padding: 4rem 0;
+    }
+
+    @media (min-width: 768px) {
+      .hero {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    .hero-content {
+      flex: 1;
+    }
+
+    .hero-title {
+      font-size: 3rem;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(to right, var(--accent), var(--accent-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-description {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .hero-users {
+      display: flex;
+      align-items: center;
+      background: rgba(30, 30, 35, 0.5);
+      border-radius: 30px;
+      padding: 0.5rem 1rem;
+      width: fit-content;
+    }
+
+    .user-avatars {
+      display: flex;
+      margin-right: 10px;
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      margin-right: -10px;
+    }
+
+    .avatar:nth-child(2) {
+      background: var(--accent-light);
+    }
+
+    .avatar:nth-child(3) {
+      background: rgba(0, 112, 243, 0.7);
+    }
+
+    .hero-users span {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .chat-container {
+      flex: 1;
+      max-width: 500px;
+      background: rgba(30, 30, 35, 0.3);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(5px);
+    }
+
+    .chat-header {
+      padding: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: #4ade80;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .chat-title {
+      font-weight: 600;
+    }
+
+    .chat-messages {
+      padding: 1rem;
+      height: 400px;
+      overflow-y: auto;
+    }
+
+    .message {
+      margin-bottom: 1rem;
+      max-width: 80%;
+    }
+
+    .message.bot {
+      border-left: 2px solid var(--accent);
+      padding-left: 1rem;
+    }
+
+    .message.user {
+      margin-left: auto;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+    }
+
+    .message-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .chat-input {
+      padding: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      gap: 10px;
+    }
+
+    .input-container {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      padding: 0.7rem;
+      resize: none;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .send-button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .send-button:hover {
+      background: var(--accent-light);
+    }
+
+    .features {
+      padding: 4rem 0;
+      text-align: center;
+    }
+
+    .features-title {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .features-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 3rem;
+    }
+
+    .feature-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .feature-card {
+      background: rgba(30, 30, 35, 0.3);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-title {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-description {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 2rem 0;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        Vibe Trading
+        <span class="beta">Beta</span>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">The Future of<br>Sentiment-Based Trading</h1>
+        <p class="hero-description">
+          Vibe Trading is an innovative algorithmic trading platform that analyzes market sentiment to find the best opportunities. Currently in development.
+        </p>
+        <div class="hero-users">
+          <div class="user-avatars">
+            <div class="avatar">AS</div>
+            <div class="avatar">JL</div>
+            <div class="avatar">PK</div>
+          </div>
+          <span>Join 120+ early adopters</span>
+        </div>
+      </div>
+
+      <div class="chat-container">
+        <div class="chat-header">
+          <div class="status-dot"></div>
+          <div class="chat-title">Vibe Trading Assistant</div>
+        </div>
+        <div class="chat-messages">
+          <div class="message bot">
+            <div class="message-label">Vibe Trading Assistant</div>
+            <div class="message-content">
+              👋 Welcome to Vibe Trading!<br><br>
+              We're building an innovative algorithmic trading platform that uses market sentiment analysis to identify opportunities.<br><br>
+              I can tell you more about our project or you can leave your email to get notified when we launch.
+            </div>
+          </div>
+          
+          <div class="message user">
+            <div class="message-content">
+              Tell me more about how sentiment analysis works in trading.
+            </div>
+          </div>
+          
+          <div class="message bot">
+            <div class="message-label">Vibe Trading Assistant</div>
+            <div class="message-content">
+              Sentiment analysis in trading involves analyzing social media posts, news articles, and market commentary to gauge market sentiment toward specific assets.<br><br>
+              Our platform uses advanced natural language processing to identify patterns that correlate with price movements, helping you make more informed trading decisions.<br><br>
+              Would you like to be notified when we launch? Just share your email address.
+            </div>
+          </div>
+        </div>
+        <div class="chat-input">
+          <div class="input-container">
+            <textarea placeholder="Ask about Vibe Trading or leave your email..."></textarea>
+          </div>
+          <button class="send-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="features">
+      <h2 class="features-title">Why Vibe Trading?</h2>
+      <p class="features-subtitle">
+        Our platform combines advanced algorithms with sentiment analysis to help you make better trading decisions.
+      </p>
+
+      <div class="feature-cards">
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3 class="feature-title">Sentiment Analysis</h3>
+          <p class="feature-description">
+            Analyze market sentiment from social media, news, and other sources to identify trading opportunities.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🤖</div>
+          <h3 class="feature-title">Algorithmic Strategies</h3>
+          <p class="feature-description">
+            Leverage pre-built trading strategies or create your own based on sentiment indicators.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔔</div>
+          <h3 class="feature-title">Real-time Alerts</h3>
+          <p class="feature-description">
+            Get notified when market sentiment changes align with your trading parameters.
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="container">
+      © 2025 Vibe Trading. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const chatMessages = document.querySelector('.chat-messages');
+      const textarea = document.querySelector('textarea');
+      const sendButton = document.querySelector('.send-button');
+      
+      // Function to add a message to the chat
+      function addMessage(content, isUser = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+        
+        if (!isUser) {
+          const labelDiv = document.createElement('div');
+          labelDiv.className = 'message-label';
+          labelDiv.textContent = 'Vibe Trading Assistant';
+          messageDiv.appendChild(labelDiv);
+        }
+        
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'message-content';
+        contentDiv.innerHTML = content.replace(/\n/g, '<br>');
+        messageDiv.appendChild(contentDiv);
+        
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+      
+      // Simple email validation
+      function isValidEmail(email) {
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return regex.test(email);
+      }
+
+      // Submit email to backend
+      async function submitEmail(email) {
+        try {
+          const response = await fetch('/api/subscribe', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email }),
+          });
+
+          const data = await response.json();
+          console.log('Email submission response:', data);
+          return data.success;
+        } catch (error) {
+          console.error('Error submitting email:', error);
+          return false;
+        }
+      }
+
+      // Send message event
+      function sendMessage() {
+        const message = textarea.value.trim();
+        if (!message) return;
+
+        // Add user message
+        addMessage(message, true);
+        textarea.value = '';
+
+        // Check if message contains email
+        const emailMatch = message.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+
+        // Simulate typing
+        setTimeout(async () => {
+          let response;
+
+          if (emailMatch && isValidEmail(emailMatch[0])) {
+            // Show typing indicator
+            const loadingMessage = document.createElement('div');
+            loadingMessage.className = 'message bot';
+            loadingMessage.innerHTML = '<div class="message-label">Vibe Trading Assistant</div><div class="message-content">...</div>';
+            chatMessages.appendChild(loadingMessage);
+
+            // Submit email to backend
+            const success = await submitEmail(emailMatch[0]);
+
+            // Remove loading indicator
+            chatMessages.removeChild(loadingMessage);
+
+            // Email response based on submission result
+            if (success) {
+              response = `Thanks for subscribing with ${emailMatch[0]}! We'll notify you when Vibe Trading launches.\n\nIs there anything else you'd like to know about our platform?`;
+            } else {
+              response = `I had trouble registering ${emailMatch[0]}. It may already be registered or there might be a connection issue. Feel free to try again or ask me any questions about Vibe Trading.`;
+            }
+          } else if (message.toLowerCase().includes('sentiment') || message.toLowerCase().includes('analysis')) {
+            response = `Our sentiment analysis technology examines multiple data sources including social media, news articles, and forum discussions to gauge market sentiment.\n\nWe use natural language processing (NLP) and machine learning to identify patterns that correlate with market movements, giving you an edge in your trading decisions.\n\nWould you like to leave your email to stay updated on our progress?`;
+          } else if (message.toLowerCase().includes('launch') || message.toLowerCase().includes('release') || message.toLowerCase().includes('when')) {
+            response = `We're currently in active development and targeting a launch in Q3 2025.\n\nIf you'd like to be notified when we're ready, please share your email address and we'll add you to our early access list.`;
+          } else {
+            response = `Thanks for your interest in Vibe Trading! Our platform combines advanced algorithms with sentiment analysis to help you make better trading decisions.\n\nWould you like to be notified when we launch? Just type your email address in the chat.`;
+          }
+
+          addMessage(response);
+        }, 1000);
+      }
+      
+      // Send on button click
+      sendButton.addEventListener('click', sendMessage);
+      
+      // Send on Enter (but not with Shift)
+      textarea.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+      
+      // Auto-resize textarea
+      textarea.addEventListener('input', () => {
+        textarea.style.height = 'auto';
+        textarea.style.height = Math.min(textarea.scrollHeight, 160) + 'px';
+      });
+    });
+  </script>
+</body>
+</html>
