@@ -28,7 +28,7 @@ export default function LandingHero() {
                 <span className="absolute -bottom-2 left-0 w-1/3 h-1 bg-accent rounded-full"></span>
               </span><br/>
               <span className="text-text-primary">trade with ideas, </span>
-              <span className="bg-gradient-to-r from-accent to-accent/70 bg-clip-text text-transparent">not interfaces</span>
+              <span className="text-accent">not interfaces</span>
             </h1>
 
             <p className="text-xl text-text-muted mb-12 max-w-xl">

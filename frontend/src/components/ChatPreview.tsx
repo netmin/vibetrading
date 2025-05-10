@@ -29,7 +29,7 @@ export default function ChatPreview() {
                 className="stroke-accent" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
           </div>
-          <span className="font-medium bg-gradient-to-r from-accent to-accent/70 bg-clip-text text-transparent">VibeTrading AI</span>
+          <span className="font-medium text-accent">VibeTrading AI</span>
           <span className="ml-1 text-xs px-1.5 py-0.5 bg-accent/10 text-accent rounded-md">Beta</span>
         </div>
       </div>

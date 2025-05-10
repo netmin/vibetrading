@@ -17,18 +17,19 @@ export default function Layout({ children }: LayoutProps) {
               <div className="relative flex items-center bg-gradient-to-r from-background to-card p-1 rounded-lg">
                 <div className="w-7 h-7 flex items-center justify-center mr-2">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
-                    <path d="M2 12C2 6.48 6.44 2 12 2C17.56 2 22 6.48 22 12C22 17.52 17.56 22 12 22C6.44 22 2 17.52 2 12Z" 
-                      className="stroke-accent" strokeWidth="1.5" />
-                    <path d="M8 13C8.55228 13 9 12.5523 9 12C9 11.4477 8.55228 11 8 11C7.44772 11 7 11.4477 7 12C7 12.5523 7.44772 13 8 13Z" 
-                      className="fill-accent" />
-                    <path d="M16 13C16.5523 13 17 12.5523 17 12C17 11.4477 16.5523 11 16 11C15.4477 11 15 11.4477 15 12C15 12.5523 15.4477 13 16 13Z" 
-                      className="fill-accent" />
-                    <path d="M8.5 17C10.25 15.5 13.75 15.5 15.5 17" 
-                      className="stroke-accent" strokeWidth="1.5" strokeLinecap="round" />
+                    {/* Circle background */}
+                    <circle cx="12" cy="12" r="10" className="stroke-accent" strokeWidth="1.5" />
+
+                    {/* Pulse wave pattern representing vibrations/sentiment */}
+                    <path d="M5.5 12H7L8.5 9.5L10 14.5L12 7.5L14 16.5L15.5 11.5L17 14L18.5 12"
+                      className="stroke-accent" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+
+                    {/* Central point showing focal energy */}
+                    <circle cx="12" cy="12" r="1.5" className="fill-accent" />
                   </svg>
                 </div>
                 <div className="text-xl font-semibold flex items-center">
-                  <span className="font-extrabold bg-gradient-to-r from-accent to-accent/70 bg-clip-text text-transparent">Vibe</span>
+                  <span className="font-extrabold text-accent">Vibe</span>
                   <span className="font-light">Trading</span>
                   <span className="ml-1 text-xs font-bold px-1.5 py-0.5 bg-accent/10 text-accent rounded-md">β</span>
                 </div>
