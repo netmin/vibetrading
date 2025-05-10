@@ -1,168 +1,7 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import Layout from '../components/Layout'
-import MessageBubble from '../components/MessageBubble'
-import TypingDots from '../components/TypingDots'
+import ChatWidget from '../components/ChatWidget'
 import { subscribeEmail } from '../api/subscriptionApi'
-
-// Chat welcome message
-const WELCOME_MESSAGE = `👋 Welcome to Vibe Trading!
-
-We're building an innovative algorithmic trading platform that uses market sentiment analysis to identify opportunities.
-
-I can tell you more about our project or you can leave your email to get notified when we launch.`;
-
-// Sample conversation for when user asks about the project
-const PROJECT_INFO = `Vibe Trading is currently in development. Here's what we're working on:
-
-• Advanced algorithmic trading strategies based on market sentiment
-• Real-time analysis of social media and news sources
-• User-friendly interface with customizable trading parameters
-• Secure API integrations with major exchanges
-
-Our platform is designed to help both beginners and experienced traders make more informed decisions based on market sentiment.`;
-
-// Helper component for the chat UI
-const ChatInterface = ({ onEmailSubmit }: { onEmailSubmit: (email: string) => void }) => {
-  const [messages, setMessages] = useState([
-    { role: 'assistant', content: WELCOME_MESSAGE }
-  ]);
-  const [inputMessage, setInputMessage] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [emailSubmitted, setEmailSubmitted] = useState(false);
-
-  // Auto-scroll to bottom when messages change
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isTyping]);
-
-  // Auto-resize textarea
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 160)}px`;
-    }
-  }, [inputMessage]);
-
-  // Process message for email collection
-  const processMessage = (message: string) => {
-    // Simple email regex pattern
-    const emailPattern = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/;
-    const emailMatch = message.match(emailPattern);
-    
-    if (emailMatch && !emailSubmitted) {
-      const email = emailMatch[0];
-      onEmailSubmit(email);
-      setEmailSubmitted(true);
-      return `Thanks for subscribing with ${email}! We'll notify you when Vibe Trading launches.
-
-Is there anything else you'd like to know about our platform?`;
-    }
-    
-    // Check if message contains questions about the project
-    const projectInfoKeywords = ['what', 'how', 'platform', 'trading', 'about', 'project', 'vibe', 'features'];
-    if (projectInfoKeywords.some(keyword => message.toLowerCase().includes(keyword))) {
-      return PROJECT_INFO;
-    }
-    
-    // Default response
-    return `That's interesting! If you'd like to stay updated on our progress, just share your email address.`;
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!inputMessage.trim()) return;
-
-    // Add user message
-    const newMessages = [...messages, { role: 'user', content: inputMessage }];
-    setMessages(newMessages);
-    setInputMessage('');
-
-    // Simulate assistant typing
-    setIsTyping(true);
-    setTimeout(() => {
-      setIsTyping(false);
-      // Process the message and get a response
-      const response = processMessage(inputMessage);
-      setMessages([...newMessages, { 
-        role: 'assistant', 
-        content: response
-      }]);
-    }, 1500);
-  };
-
-  return (
-    <div className="flex flex-col h-[600px] bg-card/5 shadow-lg rounded-xl border border-accent/10 overflow-hidden">
-      {/* Chat header */}
-      <div className="p-4 border-b border-accent/10 bg-card/30 backdrop-blur-sm">
-        <div className="flex items-center">
-          <div className="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
-          <h2 className="font-semibold text-text-primary">Vibe Trading Assistant</h2>
-        </div>
-      </div>
-
-      {/* Messages area */}
-      <div className="flex-1 overflow-y-auto p-4">
-        <div className="space-y-6">
-          {messages.map((msg, index) => (
-            <MessageBubble 
-              key={index} 
-              role={msg.role as 'user' | 'assistant'} 
-              content={msg.content} 
-            />
-          ))}
-
-          {/* Typing indicator */}
-          {isTyping && (
-            <div className="border-l-2 border-accent pl-6 py-4">
-              <div className="text-xs text-text-muted mb-2">
-                Vibe Trading Assistant
-              </div>
-              <TypingDots />
-            </div>
-          )}
-        </div>
-
-        {/* Invisible element for auto-scroll */}
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Input area */}
-      <div className="border-t border-accent/10 p-4 bg-card/30 backdrop-blur-sm">
-        <form onSubmit={handleSubmit} className="flex items-end gap-3">
-          <div className="flex-1 bg-background rounded-md border border-accent/20 overflow-hidden">
-            <textarea
-              ref={textareaRef}
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              placeholder={emailSubmitted ? "Ask me about Vibe Trading..." : "Tell me about Vibe Trading or leave your email..."}
-              className="w-full bg-transparent border-none resize-none p-3 outline-none text-text-primary min-h-[40px] max-h-[160px]"
-              rows={1}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSubmit(e);
-                }
-              }}
-            />
-          </div>
-          <button 
-            type="submit" 
-            className="p-3 rounded-md bg-accent text-white hover:bg-accent/90 transition-colors"
-            disabled={!inputMessage.trim()}
-            aria-label="Send message"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="22" y1="2" x2="11" y2="13"></line>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-            </svg>
-          </button>
-        </form>
-      </div>
-    </div>
-  );
-};
 
 export default function NewLandingPage() {
   const handleEmailSubmit = async (email: string) => {
@@ -205,61 +44,189 @@ export default function NewLandingPage() {
               </div>
             </div>
             <div className="order-1 lg:order-2">
-              <ChatInterface onEmailSubmit={handleEmailSubmit} />
+              {/* Live Chat Widget instead of a static interface */}
+              <div className="relative">
+                {/* Highlight effect for the entire chat widget */}
+                <div className="absolute -inset-3 bg-gradient-to-br from-accent/30 via-accent/10 to-transparent rounded-3xl blur-xl opacity-50 -z-10"></div>
+                <ChatWidget onEmailSubmit={handleEmailSubmit} />
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Feature highlights */}
-      <div className="container mx-auto px-4 py-16 bg-card/5">
-        <div className="max-w-[1100px] mx-auto text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Why Vibe Trading?</h2>
-          <p className="text-lg text-text-secondary max-w-2xl mx-auto">
+      <div className="container mx-auto px-4 py-20 bg-gradient-to-b from-card/5 to-card/10">
+        <div className="max-w-[1100px] mx-auto text-center mb-16">
+          <h2 className="text-4xl font-bold mb-5 bg-gradient-to-r from-accent to-accent-light/80 bg-clip-text text-transparent">Why Vibe Trading?</h2>
+          <p className="text-lg text-text-secondary max-w-2xl mx-auto leading-relaxed">
             Our platform combines advanced algorithms with sentiment analysis to help you make better trading decisions.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-[1100px] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-[1100px] mx-auto">
           {[
             {
               title: "Sentiment Analysis",
               description: "Analyze market sentiment from social media, news, and other sources to identify trading opportunities.",
-              icon: "📊"
+              iconSvg: (
+                <svg className="w-12 h-12 text-accent" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.4"/>
+                  <path d="M16.5 7.58008V8.58008C16.5 9.40008 15.83 10.0801 15 10.0801H9C8.18 10.0801 7.5 9.41008 7.5 8.58008V7.58008C7.5 6.76008 8.17 6.08008 9 6.08008H15C15.83 6.08008 16.5 6.75008 16.5 7.58008Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M8.5 14H8.51" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12 14H12.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M15.5 14H15.51" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M8.5 17.5H8.51" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12 17.5H12.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M15.5 17.5H15.51" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              )
             },
             {
               title: "Algorithmic Strategies",
               description: "Leverage pre-built trading strategies or create your own based on sentiment indicators.",
-              icon: "🤖"
+              iconSvg: (
+                <svg className="w-12 h-12 text-accent" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19.5 9.5L12 4L4.5 9.5L12 15L19.5 9.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.4"/>
+                  <path d="M19.5 14.5L12 20L4.5 14.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="12" cy="4" r="2" fill="currentColor" fillOpacity="0.4"/>
+                  <circle cx="19.5" cy="9.5" r="2" fill="currentColor" fillOpacity="0.4"/>
+                  <circle cx="4.5" cy="9.5" r="2" fill="currentColor" fillOpacity="0.4"/>
+                  <circle cx="12" cy="15" r="2" fill="currentColor" fillOpacity="0.4"/>
+                  <circle cx="19.5" cy="14.5" r="2" fill="currentColor" fillOpacity="0.4"/>
+                  <circle cx="4.5" cy="14.5" r="2" fill="currentColor" fillOpacity="0.4"/>
+                  <circle cx="12" cy="20" r="2" fill="currentColor" fillOpacity="0.4"/>
+                </svg>
+              )
             },
             {
               title: "Real-time Alerts",
               description: "Get notified when market sentiment changes align with your trading parameters.",
-              icon: "🔔"
+              iconSvg: (
+                <svg className="w-12 h-12 text-accent" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 8.95V13.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12 2C8.23 2 5.17 4.9 5.17 8.5C5.17 10.5 6 12 7 13L5 19H19L17 13C18 12 18.83 10.5 18.83 8.5C18.83 4.9 15.77 2 12 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.4"/>
+                  <path d="M9 19C9 20.6569 10.3431 22 12 22C13.6569 22 15 20.6569 15 19" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="12" cy="16" r="1" fill="currentColor"/>
+                </svg>
+              )
             }
           ].map((feature, index) => (
-            <div key={index} className="bg-card/30 backdrop-blur-sm rounded-xl p-6 border border-accent/10 hover:shadow-lg transition-all duration-300">
-              <div className="text-4xl mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-text-secondary">{feature.description}</p>
+            <div key={index} className="group relative bg-white/5 backdrop-blur-md rounded-2xl p-8 border border-accent/5 hover:border-accent/20 transition-all duration-500 shadow-lg hover:shadow-accent/5">
+              <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-500 -z-10"></div>
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-accent/10 to-transparent rounded-2xl blur opacity-0 group-hover:opacity-70 transition duration-500 -z-10"></div>
+              
+              {/* Icon with premium styling */}
+              <div className="mb-6 relative">
+                <div className="absolute -inset-3 rounded-lg bg-accent/5 blur-md transform rotate-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="relative bg-white/10 p-4 rounded-xl border border-accent/10 backdrop-blur-sm transition-all duration-300 transform group-hover:translate-y-[-5px]">
+                  {feature.iconSvg}
+                </div>
+              </div>
+              
+              <h3 className="text-xl font-bold mb-3 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent group-hover:from-accent group-hover:to-accent-light transition-all duration-300">{feature.title}</h3>
+              <p className="text-text-secondary leading-relaxed">{feature.description}</p>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="container mx-auto px-4 py-12 border-t border-accent/10">
-        <div className="max-w-[1100px] mx-auto flex flex-col md:flex-row justify-between items-center">
-          <div className="flex items-center mb-4 md:mb-0">
-            <span className="font-bold text-xl">Vibe Trading</span>
-            <span className="ml-2 bg-accent/10 text-accent text-xs px-2 py-1 rounded-full">
-              Beta
-            </span>
-          </div>
-          <div className="text-text-secondary text-sm">
-            © {new Date().getFullYear()} Vibe Trading. All rights reserved.
+      {/* Premium testimonial section */}
+      <div className="container mx-auto px-4 py-24 bg-gradient-to-b from-card/10 to-card/5">
+        <div className="max-w-4xl mx-auto bg-white/5 backdrop-blur-md rounded-3xl p-10 border border-accent/10 shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-accent/10 via-transparent to-transparent opacity-30 -z-10"></div>
+          <div className="absolute -top-20 -left-20 w-40 h-40 bg-accent/10 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-accent/10 rounded-full blur-3xl"></div>
+          
+          <div className="flex flex-col items-center text-center">
+            <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-6 border border-accent/20">
+              <svg className="w-8 h-8 text-accent" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9.25 11H14.75L15.25 15L14 18.5H10L8.75 15L9.25 11Z" fill="currentColor" fillOpacity="0.3"/>
+                <path d="M8.75 9C8.75 6.65279 10.6528 4.75 13 4.75C15.3472 4.75 17.25 6.65279 17.25 9L17.25 10.25L16.5 10.5H9.5L8.75 10.25V9Z" fill="currentColor" fillOpacity="0.3"/>
+                <path d="M12 4V2M4 12H2M6.34315 6.34315L4.92893 4.92893M17.6569 6.34315L19.0711 4.92893M20 12H22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M12 19.25V19.75M12 19.75C10.7574 19.75 9.75 20.7574 9.75 22H14.25C14.25 20.7574 13.2426 19.75 12 19.75Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M9 10.5821C9 10.5821 9.75 10.25 12 10.25C14.25 10.25 15 10.5821 15 10.5821M15 10.5821V9C15 7.34315 13.6569 6 12 6C10.3431 6 9 7.34315 9 9V10.5821ZM15 10.5821L15.5 15L14.25 18.5H9.75L8.5 15L9 10.5821Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            
+            <h3 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+              "Vibe Trading revolutionized my approach to the markets"
+            </h3>
+            
+            <p className="text-lg text-text-secondary mb-8 max-w-2xl leading-relaxed">
+              The sentiment analysis capabilities provide insights I couldn't get elsewhere. Being able to detect market sentiment shifts before they become obvious has been invaluable for my trading strategy.
+            </p>
+            
+            <div className="flex items-center">
+              <div className="w-12 h-12 rounded-full bg-accent/20 mr-4 flex items-center justify-center text-accent font-bold">JM</div>
+              <div className="text-left">
+                <div className="font-semibold">Jordan McAllister</div>
+                <div className="text-text-secondary text-sm">Professional Trader, New York</div>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+
+      {/* Footer */}
+      <div className="bg-black/40 backdrop-blur-lg border-t border-accent/10">
+        <div className="container mx-auto px-4 py-16">
+          <div className="max-w-[1100px] mx-auto flex flex-col items-center text-center">
+            <div className="mb-8">
+              <div className="flex items-center justify-center mb-4">
+                <h3 className="font-bold text-2xl bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent">Vibe Trading</h3>
+                <span className="ml-2 bg-accent/10 text-accent text-xs px-2 py-1 rounded-full border border-accent/20">
+                  Beta
+                </span>
+              </div>
+              <p className="text-text-secondary mb-8 max-w-lg mx-auto">
+                Revolutionizing trading through advanced market sentiment analysis and sophisticated algorithmic strategies.
+              </p>
+            </div>
+            
+            <div className="mb-8">
+              <h4 className="font-semibold text-lg mb-6">Connect With Us</h4>
+              <div className="flex flex-wrap justify-center gap-6">
+                {/* Discord */}
+                <a href="https://discord.gg/yEG83gYM" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center">
+                  <div className="w-14 h-14 rounded-full bg-[#5865F2]/10 flex items-center justify-center border border-[#5865F2]/30 group-hover:bg-[#5865F2]/20 transition-colors duration-300 mb-2">
+                    <svg className="w-7 h-7 text-[#5865F2]" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
+                    </svg>
+                  </div>
+                  <span className="text-sm text-text-secondary group-hover:text-white transition-colors">Discord</span>
+                </a>
+
+                {/* X (Twitter) */}
+                <a href="https://x.com/vibecatdev" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center">
+                  <div className="w-14 h-14 rounded-full bg-[#000000]/10 flex items-center justify-center border border-[#000000]/30 group-hover:bg-[#000000]/20 transition-colors duration-300 mb-2">
+                    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                  </div>
+                  <span className="text-sm text-text-secondary group-hover:text-white transition-colors">X</span>
+                </a>
+
+                {/* Telegram */}
+                <a href="https://t.me/vibecatdev" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center">
+                  <div className="w-14 h-14 rounded-full bg-[#26A5E4]/10 flex items-center justify-center border border-[#26A5E4]/30 group-hover:bg-[#26A5E4]/20 transition-colors duration-300 mb-2">
+                    <svg className="w-6 h-6 text-[#26A5E4]" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                    </svg>
+                  </div>
+                  <span className="text-sm text-text-secondary group-hover:text-white transition-colors">Telegram</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          {/* Footer content removed as requested */}
+        </div>
+      </div>
+
+      {/* Fixed chat widget that appears on all pages for visitors */}
+      <div className="lg:hidden">
+        <ChatWidget onEmailSubmit={handleEmailSubmit} position="fixed" />
       </div>
     </Layout>
   );

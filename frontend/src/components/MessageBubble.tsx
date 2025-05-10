@@ -92,10 +92,7 @@ export default function MessageBubble({ role, content, isLoading = false }: Mess
         }
         ${isLoading ? 'animate-pulse' : ''}
       `}>
-        {/* Chat bubble arrow */}
-        {role === 'user' && (
-          <div className="absolute -right-2 bottom-0 w-4 h-4 bg-accent/90 rounded-sm transform rotate-45"></div>
-        )}
+        {/* Chat bubble arrow for assistant only */}
         {role === 'assistant' && (
           <div className="absolute -left-2 bottom-0 w-4 h-4 bg-card/80 border-l border-b border-accent/10 rounded-sm transform rotate-45"></div>
         )}
