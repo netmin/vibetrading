@@ -24,7 +24,9 @@ class ApiClient {
   private baseUrl: string
 
   constructor() {
-    this.baseUrl = import.meta.env.VITE_API ?? ''
+    // Use empty string for baseUrl when using relative URLs
+    // This will make the requests go to the current domain, which is what we want
+    this.baseUrl = ''
   }
 
   // Subscribe to the waitlist

@@ -12,9 +12,9 @@ export const subscribeEmail = async (email: string): Promise<{ success: boolean;
     console.log('===== CLIENT-SIDE EMAIL SUBMISSION =====');
     console.log('Submitting email to API:', email);
     
-    // Get the correct API URL based on environment
-    const API_ROOT = import.meta.env.VITE_API ?? '';
-    const apiUrl = `${API_ROOT}/api/subscribe`;
+    // Use relative URL to make requests to the current domain
+    // This will be properly proxied by Nginx to the backend
+    const apiUrl = '/api/subscribe';
     
     console.log('API URL:', apiUrl);
     

@@ -2,12 +2,26 @@ version: '3.8'
 
 services:
   vibe-trading-agent:
+    labels:
+      # These labels ensure that API routes get correctly proxied
+      - "traefik.enable=true"
+      - "traefik.http.routers.vibe-trading-api.rule=Host(`dev.thevibe.trading`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.vibe-trading-api.entrypoints=https"
+      - "traefik.http.routers.vibe-trading-api.tls=true"
+      - "traefik.http.routers.vibe-trading-api.tls.certresolver=forge"
+      - "traefik.http.services.vibe-trading-api.loadbalancer.server.port=8000"
+      # Health check endpoint
+      - "traefik.http.routers.vibe-trading-health.rule=Host(`dev.thevibe.trading`) && Path(`/health`)"
+      - "traefik.http.routers.vibe-trading-health.entrypoints=https"
+      - "traefik.http.routers.vibe-trading-health.tls=true"
+      - "traefik.http.routers.vibe-trading-health.tls.certresolver=forge"
     build:
       context: .
       dockerfile: Dockerfile
     container_name: vibe-trading-agent
-    ports:
-      - "127.0.0.1:8000:8000"
+    # No need to expose port since Traefik will proxy requests
+    # ports:
+    #  - "127.0.0.1:8000:8000"
     environment:
       - HOST=0.0.0.0
       - PORT=8000

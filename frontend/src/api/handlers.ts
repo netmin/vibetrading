@@ -2,11 +2,12 @@ import { rest } from 'msw'
 
 // Function to check if the real API is available
 const isRealApiAvailable = async () => {
-  const API_ROOT = import.meta.env.VITE_API ?? ''
   try {
-    const response = await fetch(`${API_ROOT}/api/test`)
+    // Use a relative URL to check if the backend API is available
+    const response = await fetch('/api/health')
     return response.ok
   } catch (error) {
+    console.log('API availability check failed:', error)
     return false
   }
 }
