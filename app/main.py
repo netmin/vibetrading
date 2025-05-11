@@ -55,8 +55,10 @@ def check_admin_auth(request: Request) -> bool:
     """Check if request has valid admin authentication"""
     # In Robyn, headers are accessed directly as a dict-like object
     auth_header = request.headers.get("Authorization") or ""
+    logger.info(f"Checking admin auth with header: {auth_header[:15]}...")
 
     if not auth_header.startswith("Basic "):
+        logger.warning("Authorization header missing or not Basic auth")
         return False
 
     try:
@@ -64,8 +66,15 @@ def check_admin_auth(request: Request) -> bool:
         decoded = base64.b64decode(encoded).decode("utf-8")
         username, password = decoded.split(":")
 
-        return username == ADMIN_USERNAME and password == ADMIN_PASSWORD
+        is_valid = username == ADMIN_USERNAME and password == ADMIN_PASSWORD
+        if is_valid:
+            logger.info(f"Admin auth successful for user: {username}")
+        else:
+            logger.warning(f"Admin auth failed for user: {username}")
+
+        return is_valid
     except Exception as e:
+        logger.error(f"Auth error: {e}")
         print(f"Auth error: {e}")
         return False
 
@@ -74,8 +83,9 @@ def get_cors_headers():
     """Return standard CORS headers"""
     return {
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Cache-Control, Pragma, Authorization",
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE, PATCH",
+        "Access-Control-Allow-Headers": "Content-Type, Cache-Control, Pragma, Authorization, X-Requested-With",
+        "Access-Control-Allow-Credentials": "true",
         "Access-Control-Max-Age": "86400"
     }
 
@@ -221,18 +231,28 @@ async def subscribe(request: Request) -> Response:
 @app.get("/api/admin/subscribers")
 async def get_subscribers(request: Request) -> Response:
     """Get all subscribed email addresses (admin only)"""
+    # Log the incoming request for debugging
+    logger.info(f"GET /api/admin/subscribers request received")
+    logger.info(f"Headers: {request.headers}")
+
+    # Add CORS headers for preflight requests
+    cors_headers = get_cors_headers()
+
     if not check_admin_auth(request):
+        logger.warning("Authentication failed for /api/admin/subscribers")
         return Response(
             status_code=401,
             description=json.dumps({"success": False, "message": "Unauthorized"}),
             headers=Headers({
                 **{"Content-Type": "application/json", "WWW-Authenticate": "Basic realm=\"Admin Area\""},
-                **get_cors_headers()
+                **cors_headers
             })
         )
 
     try:
+        logger.info("Authentication succeeded, retrieving emails")
         emails = get_all_emails()
+        logger.info(f"Retrieved {len(emails)} emails from database")
 
         # Convert any non-serializable objects to strings
         serializable_emails = []
@@ -245,13 +265,25 @@ async def get_subscribers(request: Request) -> Response:
                     serializable_email[key] = str(value)
             serializable_emails.append(serializable_email)
 
+        # Create the JSON response
+        response_data = {
+            "total": len(serializable_emails),
+            "subscribers": serializable_emails
+        }
+
+        # Log what we're returning
+        logger.info(f"Returning {len(serializable_emails)} subscribers")
+
+        # Ensure proper Content-Type and CORS headers
+        headers = {
+            "Content-Type": "application/json",
+            **cors_headers
+        }
+
         return Response(
             status_code=200,
-            description=json.dumps({
-                "total": len(serializable_emails),
-                "subscribers": serializable_emails
-            }),
-            headers=Headers({**{"Content-Type": "application/json"}, **get_cors_headers()})
+            description=json.dumps(response_data),
+            headers=Headers(headers)
         )
     except Exception as e:
         error_details = traceback.format_exc()
@@ -264,7 +296,7 @@ async def get_subscribers(request: Request) -> Response:
                 "message": f"Error retrieving subscribers: {str(e)}",
                 "details": error_details
             }),
-            headers=Headers({**{"Content-Type": "application/json"}, **get_cors_headers()})
+            headers=Headers({**{"Content-Type": "application/json"}, **cors_headers})
         )
 
 @app.get("/health")
@@ -277,6 +309,38 @@ async def health(request: Request) -> Response:
     )
 
 # 404 handler
+# Add a simple plain-text subscriber list endpoint as fallback
+@app.get("/api/admin/subscribers.txt")
+async def get_subscribers_plain(request: Request) -> Response:
+    """Get all subscribed email addresses as plain text (admin only)"""
+    if not check_admin_auth(request):
+        return Response(
+            status_code=401,
+            description="Unauthorized",
+            headers=Headers({
+                **{"Content-Type": "text/plain", "WWW-Authenticate": "Basic realm=\"Admin Area\""},
+                **get_cors_headers()
+            })
+        )
+
+    try:
+        emails = get_all_emails()
+        # Extract just the email addresses and join with newlines
+        email_list = "\n".join([email.get("email", "") for email in emails])
+        return Response(
+            status_code=200,
+            description=email_list,
+            headers=Headers({**{"Content-Type": "text/plain"}, **get_cors_headers()})
+        )
+    except Exception as e:
+        error_message = f"Error retrieving subscribers: {str(e)}"
+        logger.error(error_message)
+        return Response(
+            status_code=500,
+            description=error_message,
+            headers=Headers({**{"Content-Type": "text/plain"}, **get_cors_headers()})
+        )
+
 @app.get("*")
 @app.post("*")
 async def not_found(request: Request) -> Response:
@@ -288,10 +352,30 @@ async def not_found(request: Request) -> Response:
         headers=Headers({**{"Content-Type": "application/json"}, **get_cors_headers()})
     )
 
+# Add global CORS middleware to ensure all responses have CORS headers
+@app.after_request
+async def add_cors_headers(response: Response) -> Response:
+    """Add CORS headers to all responses"""
+    # Get a copy of the current headers
+    headers = {**response.headers.to_dict()}
+
+    # Add CORS headers if they don't exist
+    cors_headers = get_cors_headers()
+    for header, value in cors_headers.items():
+        if header not in headers:
+            headers[header] = value
+
+    # Create a new response with the updated headers
+    return Response(
+        status_code=response.status_code,
+        description=response.description,
+        headers=Headers(headers)
+    )
+
 if __name__ == "__main__":
     host = os.environ.get("HOST", "0.0.0.0")
     port = int(os.environ.get("PORT", "8000"))
-    
+
     logger.info(f"Starting server on {host}:{port} with CORS enabled")
     # Start the Robyn server
     app.start(host=host, port=port)
