@@ -44,7 +44,7 @@ services:
   vibe-trading-frontend:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.vibe-trading-frontend.rule=Host(`dev.thevibe.trading`)"
+      - "traefik.http.routers.vibe-trading-frontend.rule=Host(`thevibe.trading`)"
       - "traefik.http.routers.vibe-trading-frontend.entrypoints=https"
       - "traefik.http.routers.vibe-trading-frontend.tls=true"
       - "traefik.http.routers.vibe-trading-frontend.tls.certresolver=forge"
