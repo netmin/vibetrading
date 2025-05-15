@@ -63,6 +63,20 @@ export default function NewLandingPage() {
                   </div>
                   <span className="text-sm text-text-secondary">Join 120+ early adopters</span>
                 </div>
+                <a 
+                  href="https://app.thevibe.trading"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative max-w-xs text-center py-2 px-6 font-medium text-white overflow-hidden rounded-xl"
+                >
+                  <span className="absolute inset-0 bg-gradient-to-r from-accent to-accent/80 group-hover:scale-105 transition-all duration-300"></span>
+                  <span className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-accent via-accent/90 to-accent/80 transition-opacity duration-300"></span>
+                  <span className="absolute bottom-0 left-0 right-0 h-1 bg-white/20"></span>
+                  <span className="relative z-10 flex items-center justify-center text-gray-800 font-medium">
+                    Try Now
+                  </span>
+                  <span className="absolute inset-0 shadow-[0_4px_14px_0px_rgba(0,118,255,0.39)] group-hover:shadow-[0_6px_20px_rgba(0,118,255,0.4)] transition-all duration-300"></span>
+                </a>
               </div>
             </div>
             <div className="order-1 lg:order-2">
@@ -249,7 +263,7 @@ export default function NewLandingPage() {
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-accent/10 via-transparent to-transparent opacity-30 -z-10"></div>
           <div className="absolute -top-20 -left-20 w-40 h-40 bg-accent/10 rounded-full blur-3xl"></div>
           <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-accent/10 rounded-full blur-3xl"></div>
-          
+
           <div className="flex flex-col items-center text-center">
             <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-6 border border-accent/20">
               <svg className="w-8 h-8 text-accent" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -260,15 +274,15 @@ export default function NewLandingPage() {
                 <path d="M9 10.5821C9 10.5821 9.75 10.25 12 10.25C14.25 10.25 15 10.5821 15 10.5821M15 10.5821V9C15 7.34315 13.6569 6 12 6C10.3431 6 9 7.34315 9 9V10.5821ZM15 10.5821L15.5 15L14.25 18.5H9.75L8.5 15L9 10.5821Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
-            
+
             <h3 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
               "Vibe Trading revolutionized my approach to the markets"
             </h3>
-            
+
             <p className="text-lg text-text-secondary mb-8 max-w-2xl leading-relaxed">
               The sentiment analysis capabilities provide insights I couldn't get elsewhere. Being able to detect market sentiment shifts before they become obvious has been invaluable for my trading strategy.
             </p>
-            
+
             <div className="flex items-center">
               <div className="w-12 h-12 rounded-full bg-accent/20 mr-4 flex items-center justify-center text-accent font-bold">JM</div>
               <div className="text-left">
@@ -295,7 +309,7 @@ export default function NewLandingPage() {
                 Revolutionizing trading through advanced market sentiment analysis and sophisticated algorithmic strategies.
               </p>
             </div>
-            
+
             <div className="mb-8">
               <h4 className="font-semibold text-lg mb-6">Connect With Us</h4>
               <div className="flex flex-wrap justify-center gap-6">
@@ -328,7 +342,7 @@ export default function NewLandingPage() {
               </div>
             </div>
           </div>
-          
+
           {/* Footer content removed as requested */}
         </div>
       </div>
