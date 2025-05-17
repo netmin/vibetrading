@@ -1,1 +1,1 @@
-# API module - now using Robyn in main.py directly
+# API module - endpoints are implemented in main.py using FastAPI

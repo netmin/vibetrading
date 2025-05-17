@@ -2,8 +2,8 @@ import logging
 import sys
 
 
-def setup_robyn_logger(level: int = logging.INFO) -> logging.Logger:
-    """Configure and return a logger for the application and Robyn."""
+def setup_fastapi_logger(level: int = logging.INFO) -> logging.Logger:
+    """Configure and return a logger for the application and FastAPI."""
     logger = logging.getLogger()
     logger.setLevel(level)
 
@@ -17,10 +17,10 @@ def setup_robyn_logger(level: int = logging.INFO) -> logging.Logger:
     handler.setFormatter(formatter)
     logger.addHandler(handler)
 
-    # Ensure Robyn's internal logger uses the same configuration
-    robyn_logger = logging.getLogger("robyn")
-    robyn_logger.setLevel(level)
-    robyn_logger.propagate = True
+    # Ensure FastAPI/Uvicorn uses the same configuration
+    uvicorn_logger = logging.getLogger("uvicorn")
+    uvicorn_logger.setLevel(level)
+    uvicorn_logger.propagate = True
 
     return logger
 

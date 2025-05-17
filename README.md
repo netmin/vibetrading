@@ -116,7 +116,7 @@ To run the backend service locally:
 
 3. Run the service:
    ```bash
-   python -m app.main
+   uvicorn app.main:app --reload
    ```
 
 ### Frontend Development
@@ -168,7 +168,7 @@ GET /health
 
 The service uses a functional/procedural programming style (no OOP) with these components:
 
-1. **Robyn Web Server**: Handles HTTP requests and responses
+1. **FastAPI Web Framework**: Handles HTTP requests and responses
 2. **OpenAI Agents SDK**: Powers the interactive AI agent
 3. **SQLite Database**: Stores collected email addresses
 4. **React Frontend**: Provides a modern web interface
@@ -183,7 +183,6 @@ The service uses a functional/procedural programming style (no OOP) with these c
 
 ## Logging
 
-The backend configures a shared logger for the entire application and the Robyn
-web server. Logging output uses the standard Python `logging` module and writes
+The backend configures a shared logger for the entire application and the FastAPI server. Logging output uses the standard Python `logging` module and writes
 to stdout. The configuration resides in `app/utils/logging_config.py` and is
 initialized when the server starts.
