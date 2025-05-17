@@ -10,19 +10,14 @@ from dotenv import load_dotenv
 import logging
 import sys
 import traceback
+from app.utils.logging_config import setup_robyn_logger, get_logger
 from app.db import init_db, add_email, email_exists, get_all_emails
 from app.agent import process_chat_message
 from app.utils import validate_email
 
-# Configure detailed logging
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler(sys.stdout)
-    ]
-)
-logger = logging.getLogger(__name__)
+# Configure detailed logging for Robyn and the application
+setup_robyn_logger(logging.DEBUG)
+logger = get_logger(__name__)
 
 # Load environment variables
 load_dotenv()
