@@ -168,6 +168,7 @@ def _add_email_to_path(email: str, db_path: str) -> bool:
             cursor.execute("INSERT INTO emails (email) VALUES (?)", (email,))
             conn.commit()
             inserted = True
+            logger.info(f"Email {email} saved to database at {db_path}")
             logger.debug("INSERT committed successfully")
             print(f"NEW EMAIL ADDED TO {db_path}: {email}")
 
