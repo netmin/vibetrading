@@ -176,3 +176,10 @@ The service uses a functional/procedural programming style (no OOP) with these c
 - The service uses Basic Authentication for the admin endpoints
 - Email validation is performed to prevent invalid data
 - SQLite database is stored in a Docker volume for persistence
+
+## Logging
+
+The backend configures a shared logger for the entire application and the Robyn
+web server. Logging output uses the standard Python `logging` module and writes
+to stdout. The configuration resides in `app/utils/logging_config.py` and is
+initialized when the server starts.

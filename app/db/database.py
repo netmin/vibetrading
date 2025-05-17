@@ -3,16 +3,10 @@ import os
 from typing import List, Optional
 import logging
 import traceback
+from app.utils.logging_config import get_logger
 
-# Set up logging
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler()
-    ]
-)
-logger = logging.getLogger(__name__)
+# Use shared logging configuration from the main application
+logger = get_logger(__name__)
 
 # Use absolute path to ensure database is created in the right location
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
