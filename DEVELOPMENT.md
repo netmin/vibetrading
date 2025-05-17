@@ -31,7 +31,7 @@ This document provides more detailed instructions for setting up and running the
 
 Run the backend service:
 ```bash
-python -m app.main
+uvicorn app.main:app --reload
 ```
 
 The backend will be available at http://localhost:8000.
@@ -97,7 +97,7 @@ For manual development:
 
 1. Start the backend:
    ```bash
-   python -m app.main
+   uvicorn app.main:app --reload
    ```
 
 2. For the frontend, just open the HTML file in your browser or serve it with a simple HTTP server:
@@ -150,7 +150,7 @@ docker-compose -f docker-compose.frontend.yml up --build
 
 ## Architecture Notes
 
-- The backend uses Robyn web server with OpenAI Agents
-- The frontend uses React with Vite
-- Communication between frontend and backend is via REST API
-- Docker Compose orchestrates the entire stack
+The backend uses FastAPI web framework with OpenAI Agents
+The frontend uses React with Vite
+Communication between frontend and backend is via REST API
+Docker Compose orchestrates the entire stack
