@@ -52,6 +52,10 @@ OPENAI_API_KEY=your_openai_api_key_here
 # Admin credentials (optional, defaults shown)
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=admin
+
+# Telegram notifications (optional)
+TELEGRAM_BOT_TOKEN=your_bot_token
+TELEGRAM_CHAT_ID=your_chat_id
 ```
 
 ## Setup and Installation
