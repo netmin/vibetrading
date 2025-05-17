@@ -162,6 +162,7 @@ Authorization: Basic <base64 encoded username:password>
 ### Health Check
 ```
 GET /health
+GET /api/health
 ```
 
 ## Architecture

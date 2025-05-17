@@ -196,6 +196,13 @@ async def health() -> JSONResponse:
     return JSONResponse(status_code=200, content={"status": "ok"})
 
 
+@app.get("/api/health")
+async def api_health() -> JSONResponse:
+    """Health check endpoint for frontend proxy."""
+
+    return JSONResponse(status_code=200, content={"status": "ok"})
+
+
 @app.api_route("/{full_path:path}", methods=["GET", "POST"])
 async def not_found(full_path: str) -> JSONResponse:
     """Handle 404 for any undefined route."""
