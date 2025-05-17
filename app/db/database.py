@@ -3,6 +3,8 @@ import os
 from typing import List, Optional
 import logging
 import traceback
+
+from app.utils import send_telegram_message
 from app.utils.logging_config import get_logger
 
 # Use shared logging configuration from the main application
