@@ -125,6 +125,7 @@ def _add_email_to_path(email: str, db_path: str) -> bool:
 
         # Connect to the database with timeout and detailed logging
         conn = None
+        inserted = False
         try:
             logger.debug(f"Connecting to database at {db_path}...")
             conn = sqlite3.connect(db_path, timeout=10.0)
@@ -166,6 +167,7 @@ def _add_email_to_path(email: str, db_path: str) -> bool:
             logger.debug(f"Executing INSERT for email: {email}")
             cursor.execute("INSERT INTO emails (email) VALUES (?)", (email,))
             conn.commit()
+            inserted = True
             logger.debug("INSERT committed successfully")
             print(f"NEW EMAIL ADDED TO {db_path}: {email}")
 
@@ -189,6 +191,11 @@ def _add_email_to_path(email: str, db_path: str) -> bool:
             conn.close()
             logger.debug(f"Successfully added email: {email}")
             logger.debug(f"====== EMAIL SUBMISSION COMPLETE ======")
+            if inserted:
+                try:
+                    send_telegram_message(f"New vibe subscriber: {email}")
+                except Exception as e:
+                    logger.error(f"Telegram notification failed: {e}")
             return True
 
         except sqlite3.Error as sql_error:
