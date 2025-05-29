@@ -16,7 +16,7 @@ function App() {
           <Route path="/" element={<NewLandingPage />} />
           <Route path="/old" element={<LandingPage />} />
           <Route path="/chat" element={<ChatShell />} />
-          <Route path="/discord" element={<Navigate to="https://discord.gg/yEG83gYM" />} />
+          <Route path="/discord" element={<Navigate to="https://discord.gg/SNRKrSh2wF" />} />
         </Routes>
       </Router>
     </AuthContext.Provider>

@@ -61,7 +61,7 @@ export default function Layout({ children }: LayoutProps) {
             </svg>
           </a>
           <a
-            href="https://discord.gg/yEG83gYM"
+            href="https://discord.gg/SNRKrSh2wF"
             target="_blank"
             rel="noopener noreferrer"
             className="text-text-primary hover:text-accent transition-colors"
@@ -100,7 +100,7 @@ export default function Layout({ children }: LayoutProps) {
 
             <div className="flex items-center gap-6">
               <a
-                href="https://discord.gg/yEG83gYM"
+                href="https://discord.gg/SNRKrSh2wF"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-text/60 hover:text-accent transition-colors"
