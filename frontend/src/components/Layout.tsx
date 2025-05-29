@@ -72,7 +72,7 @@ export default function Layout({ children }: LayoutProps) {
             </svg>
           </a>
           <a
-            href="https://t.me/vibecatdev"
+            href="https://t.me/thevibetrading"
             target="_blank"
             rel="noopener noreferrer"
             className="text-text-primary hover:text-accent transition-colors"
@@ -116,7 +116,7 @@ export default function Layout({ children }: LayoutProps) {
                 X
               </a>
               <a
-                href="https://t.me/vibecatdev"
+                href="https://t.me/thevibetrading"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-text/60 hover:text-accent transition-colors"
