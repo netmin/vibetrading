@@ -30,7 +30,7 @@ export default function NewLandingPage() {
                 {/* Professional typography with precise spacing and visual hierarchy */}
                 <div className="relative">
                   <span className="block text-4xl md:text-5xl lg:text-6xl font-light tracking-tight mb-2 text-white">
-                    The Future of
+                    Trade Smarter with
                   </span>
                   {/* Accent element to draw attention */}
                   <div className="absolute left-0 top-0 h-full w-1 bg-accent rounded-full hidden md:block"></div>
@@ -38,10 +38,10 @@ export default function NewLandingPage() {
 
                 <div className="relative">
                   <span className="block text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-tight">
-                    Sentiment-Based
+                    AI-Powered
                   </span>
                   <span className="block text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-tight">
-                    Trading
+                    Strategies
                   </span>
 
                   {/* Subtle accent line for visual polish */}
@@ -52,7 +52,7 @@ export default function NewLandingPage() {
                 </div>
               </h1>
               <p className="text-lg text-text-secondary mb-6">
-                Vibe Trading is an innovative algorithmic trading platform that analyzes market sentiment to find the best opportunities. Currently in development.
+                Vibe Trading uses a proprietary LLM trained on real market data to transform your ideas into backtested strategies within seconds. Our results are continually verified so you can trade with confidence.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 items-center">
                 <div className="bg-card/30 backdrop-blur-sm rounded-full px-4 py-2 border border-accent/10 flex items-center gap-2">
@@ -61,7 +61,7 @@ export default function NewLandingPage() {
                     <div className="w-8 h-8 rounded-full bg-accent/30 flex items-center justify-center text-xs">JL</div>
                     <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-xs">PK</div>
                   </div>
-                  <span className="text-sm text-text-secondary">Join 120+ early adopters</span>
+                  <span className="text-sm text-text-secondary">Join over 120 early adopters</span>
                 </div>
                 <a 
                   href="https://app.thevibe.trading"
@@ -73,7 +73,7 @@ export default function NewLandingPage() {
                   <span className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-accent via-accent/90 to-accent/80 transition-opacity duration-300"></span>
                   <span className="absolute bottom-0 left-0 right-0 h-1 bg-white/20"></span>
                   <span className="relative z-10 flex items-center justify-center text-gray-800 font-medium">
-                    Try Now
+                    Get Started
                   </span>
                   <span className="absolute inset-0 shadow-[0_4px_14px_0px_rgba(0,118,255,0.39)] group-hover:shadow-[0_6px_20px_rgba(0,118,255,0.4)] transition-all duration-300"></span>
                 </a>
@@ -103,8 +103,8 @@ export default function NewLandingPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-[1100px] mx-auto">
           {[
             {
-              title: "Sentiment Analysis",
-              description: "Analyze market sentiment from social media, news, and other sources to identify trading opportunities.",
+              title: "Market Sentiment Intel",
+              description: "Leverage real-time sentiment from news and social channels to uncover opportunities before the crowd.",
               iconSvg: (
                 <div className="relative flex items-center justify-center">
                   {/* Premium layered sentiment icon with orbital ring and pulse effect */}
@@ -137,8 +137,8 @@ export default function NewLandingPage() {
               )
             },
             {
-              title: "Algorithmic Strategies",
-              description: "Leverage pre-built trading strategies or create your own based on sentiment indicators.",
+              title: "LLM-Generated Strategies",
+              description: "Our LLM converts your instructions into tested trading algorithms—no coding required.",
               iconSvg: (
                 <div className="relative flex items-center justify-center">
                   {/* Premium algorithmic strategy icon with animated elements */}
@@ -184,8 +184,8 @@ export default function NewLandingPage() {
               )
             },
             {
-              title: "Real-time Alerts",
-              description: "Get notified when market sentiment changes align with your trading parameters.",
+              title: "Instant Alerts",
+              description: "Receive notifications the moment our analysis spots setups that match your parameters.",
               iconSvg: (
                 <div className="relative flex items-center justify-center">
                   {/* Premium real-time alerts icon with animated pulse effects */}
@@ -276,11 +276,11 @@ export default function NewLandingPage() {
             </div>
 
             <h3 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
-              "Vibe Trading revolutionized my approach to the markets"
+              "Vibe Trading transformed how I trade"
             </h3>
 
             <p className="text-lg text-text-secondary mb-8 max-w-2xl leading-relaxed">
-              The sentiment analysis capabilities provide insights I couldn't get elsewhere. Being able to detect market sentiment shifts before they become obvious has been invaluable for my trading strategy.
+              The AI-driven sentiment insights reveal shifts before they hit the charts. It's become an essential part of my strategy.
             </p>
 
             <div className="flex items-center">
@@ -306,7 +306,7 @@ export default function NewLandingPage() {
                 </span>
               </div>
               <p className="text-text-secondary mb-8 max-w-lg mx-auto">
-                Revolutionizing trading through advanced market sentiment analysis and sophisticated algorithmic strategies.
+                Empowering traders with AI-driven strategies and rigorous performance verification.
               </p>
             </div>
 
