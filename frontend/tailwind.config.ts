@@ -8,17 +8,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        base: '#0D0D0D',
-        card: '#1A1A1A',
-        border: '#262626',
-        accent: '#38BDF8',
-        'accent-hover': '#0EA5E9',
-        danger: '#F43F5E',
-        'text-primary': '#E4E4E7',
-        'text-muted': '#9CA3AF',
+        base: 'var(--color-base)',
+        card: 'var(--color-card)',
+        border: 'var(--color-border)',
+        accent: 'var(--color-accent)',
+        'accent-hover': 'var(--color-accent-hover)',
+        danger: 'var(--color-danger)',
+        'text-primary': 'var(--color-text-primary)',
+        'text-muted': 'var(--color-text-muted)',
         // Keep old colors for backward compatibility
-        background: '#0D0D0D',
-        text: '#E4E4E7',
+        background: 'var(--color-base)',
+        text: 'var(--color-text-primary)',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
