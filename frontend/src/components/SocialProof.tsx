@@ -20,7 +20,7 @@ export default function SocialProof() {
           
           {/* Discord Logo */}
           <a
-            href="https://discord.gg/yEG83gYM"
+            href="https://discord.gg/SNRKrSh2wF"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#525252] hover:text-accent transition-colors"
