@@ -33,7 +33,7 @@ export default function SocialProof() {
           
           {/* Telegram Logo */}
           <a
-            href="https://t.me/vibecatdev"
+            href="https://t.me/thevibetrading"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#525252] hover:text-accent transition-colors"
