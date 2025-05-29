@@ -8,17 +8,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        base: 'var(--color-base)',
-        card: 'var(--color-card)',
-        border: 'var(--color-border)',
-        accent: 'var(--color-accent)',
-        'accent-hover': 'var(--color-accent-hover)',
-        danger: 'var(--color-danger)',
-        'text-primary': 'var(--color-text-primary)',
-        'text-muted': 'var(--color-text-muted)',
+        base: 'rgb(var(--color-base) / <alpha-value>)',
+        card: 'rgb(var(--color-card) / <alpha-value>)',
+        border: 'rgb(var(--color-border) / <alpha-value>)',
+        accent: 'rgb(var(--color-accent) / <alpha-value>)',
+        'accent-hover': 'rgb(var(--color-accent-hover) / <alpha-value>)',
+        danger: 'rgb(var(--color-danger) / <alpha-value>)',
+        'text-primary': 'rgb(var(--color-text-primary) / <alpha-value>)',
+        'text-muted': 'rgb(var(--color-text-muted) / <alpha-value>)',
         // Keep old colors for backward compatibility
-        background: 'var(--color-base)',
-        text: 'var(--color-text-primary)',
+        background: 'rgb(var(--color-base) / <alpha-value>)',
+        text: 'rgb(var(--color-text-primary) / <alpha-value>)',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
