@@ -4,25 +4,25 @@
 
 /* Theme color variables */
 :root {
-  --color-base: #0d0d0d;
-  --color-card: #1a1a1a;
-  --color-border: #262626;
-  --color-accent: #38bdf8;
-  --color-accent-hover: #0ea5e9;
-  --color-danger: #f43f5e;
-  --color-text-primary: #e4e4e7;
-  --color-text-muted: #9ca3af;
+  --color-base: 13 13 13;
+  --color-card: 26 26 26;
+  --color-border: 38 38 38;
+  --color-accent: 56 189 248;
+  --color-accent-hover: 14 165 233;
+  --color-danger: 244 63 94;
+  --color-text-primary: 228 228 231;
+  --color-text-muted: 156 163 175;
 }
 
 [data-theme='light'] {
-  --color-base: #ffffff;
-  --color-card: #f9fafb;
-  --color-border: #d1d5db;
-  --color-accent: #0ea5e9;
-  --color-accent-hover: #0284c7;
-  --color-danger: #dc2626;
-  --color-text-primary: #1f2937;
-  --color-text-muted: #6b7280;
+  --color-base: 255 255 255;
+  --color-card: 249 250 251;
+  --color-border: 209 213 219;
+  --color-accent: 14 165 233;
+  --color-accent-hover: 2 132 199;
+  --color-danger: 220 38 38;
+  --color-text-primary: 31 41 55;
+  --color-text-muted: 107 114 128;
 }
 
 @layer base {
